@@ -18,7 +18,6 @@ import java.util.Scanner;
  * @author Trung Nguyen
  */
 public class Main {
-
     //create an employee by inputing it's attribute values from keyboard
     static Employee createNewEmployee() {
         System.out.print("Do you want to create a Staff or a Teacher (enter S for Staff, otherwise for Teacher)?");
@@ -74,7 +73,7 @@ public class Main {
     }
 
     private static void editStaff(Scanner scan, Employee employee) {
-        System.out.println("=========EDIT INFO=========");
+        System.out.println("\t\t====================EDIT-INFO====================");
         System.out.println(String.format("Current staff/teacher: %s", employee.toString()));
         employee.setFullName(InputHelper.inputForName("Name: ", scan));
         employee.setSalaryRatio((float) InputHelper.inputForPositiveDoubleNumber("Salary ratio: ", scan));
@@ -111,10 +110,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        String fileName = FileUtils.LIST_EMPLOYEE_FILE_NAME;
         // create employee management object
         EmployeeManagement empMan = new EmployeeManagement();
         // read data from file
-        empMan.setListE((ArrayList<Employee>) FileUtils.<Employee>readList());
+        empMan.setListE((ArrayList<Employee>) FileUtils.<Employee>readFile(fileName));
 
         //menu
         Scanner scan = new Scanner(System.in);
@@ -135,7 +135,7 @@ public class Main {
                     float allowance = AllowanceCalulator.calculateAllowance(emp);
                     emp.setAllowance(allowance);
                     empMan.addEmployee(emp);
-                    FileUtils.writeList(empMan.listAll());
+                    FileUtils.writeFile(empMan.listAll(), fileName);
                     break;
                 case 2://search by name
                     display(searchByName(empMan));
@@ -164,8 +164,11 @@ public class Main {
                             Employee employee = foundByName.get(pick);
                             editStaff(scan, employee);
                         } else {
+                            scan.nextLine();
                             editStaff(scan, foundByName.get(0));
                         }
+                        FileUtils.clearFile(fileName);
+                        FileUtils.writeFile(empMan.listAll(), fileName);
                     }
                     break;
                 case 6://exit
