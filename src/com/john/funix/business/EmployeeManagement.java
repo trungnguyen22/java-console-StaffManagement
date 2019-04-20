@@ -19,7 +19,7 @@ import java.util.Collections;
 public class EmployeeManagement {
 
     //store all staff/teacher
-    ArrayList<Employee> listE;
+    private ArrayList<Employee> listE;
 
     public EmployeeManagement() {
         listE = new ArrayList<>();

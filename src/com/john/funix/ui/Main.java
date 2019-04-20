@@ -147,7 +147,7 @@ public class Main {
                     ArrayList<Employee> listE = empMan.listAll();
                     display(listE);
                     break;
-                case 5:
+                case 5:// edit info
                     ArrayList<Employee> foundByName = searchByName(empMan);
                     display(foundByName);
                     if (foundByName.size() > 0) {
