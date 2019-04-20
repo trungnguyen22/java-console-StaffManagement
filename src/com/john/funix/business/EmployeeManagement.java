@@ -85,28 +85,38 @@ public class EmployeeManagement {
     }
 
     private void mapFileDataToStaff(String[] strArray) {
-        Staff staff = new Staff(
-                EType.from(strArray[0]),
-                strArray[1],
-                strArray[2],
-                EPosition.from(strArray[3]),
-                Float.parseFloat(strArray[4]),
-                Float.parseFloat(strArray[5]),
-                Float.parseFloat(strArray[6])
-        );
-        listE.add(staff);
+        try {
+            Staff staff = new Staff(
+                    EType.from(strArray[0]),
+                    strArray[1],
+                    strArray[2],
+                    EPosition.from(strArray[3]),
+                    Float.parseFloat(strArray[4]),
+                    Float.parseFloat(strArray[5]),
+                    Float.parseFloat(strArray[6])
+            );
+            listE.add(staff);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void mapFileDataToTeacher(String[] strArray) {
-        Teacher teacher = new Teacher(
-                EType.from(strArray[0]),
-                strArray[1],
-                strArray[2],
-                EDegree.from(strArray[3]),
-                Float.parseFloat(strArray[4]),
-                Float.parseFloat(strArray[5]),
-                Integer.parseInt(strArray[6])
-        );
-        listE.add(teacher);
+        try {
+            Teacher teacher = new Teacher(
+                    EType.from(strArray[0]),
+                    strArray[1],
+                    strArray[2],
+                    EDegree.from(strArray[3]),
+                    Float.parseFloat(strArray[4]),
+                    Float.parseFloat(strArray[5]),
+                    Integer.parseInt(strArray[6])
+            );
+            listE.add(teacher);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
     }
 }
