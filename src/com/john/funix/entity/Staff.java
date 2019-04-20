@@ -18,6 +18,15 @@ public class Staff extends Employee {
 
     }
 
+    public Staff(EType eTypeEmployee, String fullName,
+                 String department, EPosition position,
+                 float salaryRatio, float allowance, float noOfWorkingDay) {
+        super(eTypeEmployee, fullName, salaryRatio, allowance);
+        this.department = department;
+        this.noOfWorkingDay = noOfWorkingDay;
+        this.position = position;
+    }
+
     public String getDepartment() {
         return department;
     }
@@ -52,13 +61,14 @@ public class Staff extends Employee {
 
     @Override
     public String toString() {
-        return this.getFullName() + ", " +
+        return this.geteTypeEmployee().type + ", " +
+                this.getFullName() + ", " +
                 this.getDepartment() + ", " +
                 this.getPosition() + ", " +
                 this.getSalaryRatio() + ", " +
                 this.getAllowance() + ", " +
                 this.getNoOfWorkingDay() + ", " +
-                this.getSalary();
+                this.getSalary() + "\n";
 
     }
 

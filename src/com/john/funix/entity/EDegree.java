@@ -29,4 +29,13 @@ public enum EDegree {
         }
         return BACHELOR;
     }
+
+    public static EDegree from(String type) {
+        for (EDegree value : EDegree.values()) {
+            if (value.toString().equals(type)) {
+                return value;
+            }
+        }
+        return BACHELOR;
+    }
 }

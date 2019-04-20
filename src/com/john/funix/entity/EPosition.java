@@ -30,4 +30,13 @@ public enum EPosition {
         return STAFF;
     }
 
+    public static EPosition from(String type) {
+        for (EPosition value : EPosition.values()) {
+            if (value.toString().equals(type)) {
+                return value;
+            }
+        }
+        return STAFF;
+    }
+
 }

@@ -43,5 +43,36 @@ public class FileUtils {
         writeFile(new ArrayList<>(), fileName);
     }
 
+    public static <T> void writeListAsString(T item, String fileName) {
+        try {
+            File f = new File(fileName);
+            FileWriter fw = new FileWriter(f.getAbsoluteFile(), true);
+            fw.write(item.toString());
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<String> readListString(String fileName) {
+        List<String> listString = new ArrayList<>();
+        try {
+            File f = new File(fileName);
+            FileReader fr = new FileReader(f);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                listString.add(line);
+                // System.out.println(line);
+            }
+            br.close();
+            fr.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return listString;
+    }
 
 }

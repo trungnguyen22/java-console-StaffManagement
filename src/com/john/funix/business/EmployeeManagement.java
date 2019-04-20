@@ -5,12 +5,12 @@
  */
 package com.john.funix.business;
 
-import com.john.funix.entity.Employee;
-import com.john.funix.entity.Staff;
-import com.john.funix.entity.Teacher;
+import com.john.funix.entity.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -71,5 +71,42 @@ public class EmployeeManagement {
     public ArrayList<Employee> listAll() {
         Collections.sort(listE);
         return listE;
+    }
+
+    public void mapFileDataToModel(List<String> listString) {
+        for (String strItem : listString) {
+            String[] strArray = strItem.split(", ");
+            if (strArray[0].equals(EType.STAFF.getType())) {
+                mapFileDataToStaff(strArray);
+            } else if (strArray[0].equals(EType.TEACHER.getType())) {
+                mapFileDataToTeacher(strArray);
+            }
+        }
+    }
+
+    private void mapFileDataToStaff(String[] strArray) {
+        Staff staff = new Staff(
+                EType.from(strArray[0]),
+                strArray[1],
+                strArray[2],
+                EPosition.from(strArray[3]),
+                Float.parseFloat(strArray[4]),
+                Float.parseFloat(strArray[5]),
+                Float.parseFloat(strArray[6])
+        );
+        listE.add(staff);
+    }
+
+    private void mapFileDataToTeacher(String[] strArray) {
+        Teacher teacher = new Teacher(
+                EType.from(strArray[0]),
+                strArray[1],
+                strArray[2],
+                EDegree.from(strArray[3]),
+                Float.parseFloat(strArray[4]),
+                Float.parseFloat(strArray[5]),
+                Integer.parseInt(strArray[6])
+        );
+        listE.add(teacher);
     }
 }

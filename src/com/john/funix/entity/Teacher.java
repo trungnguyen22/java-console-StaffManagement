@@ -18,8 +18,15 @@ public class Teacher extends Employee {
     private int teachingHours;//số tiết dạy
 
     public Teacher() {
-        float allowance = AllowanceCalulator.calculateAllowance((this));
-        this.setAllowance(allowance);
+    }
+
+    public Teacher(EType eTypeEmployee, String fullName,
+                   String faculty, EDegree degree,
+                   float salaryRatio, float allowance, int teachingHours) {
+        super(eTypeEmployee, fullName, salaryRatio, allowance);
+        this.faculty = faculty;
+        this.degree = degree;
+        this.teachingHours = teachingHours;
     }
 
     public String getFaculty() {
@@ -56,13 +63,14 @@ public class Teacher extends Employee {
 
     @Override
     public String toString() {
-        return this.getFullName() + ", " +
+        return this.geteTypeEmployee().type + ", " +
+                this.getFullName() + ", " +
                 this.getFaculty() + ", " +
                 this.getDegree() + ", " +
                 this.getSalaryRatio() + ", " +
                 this.getAllowance() + ", " +
                 this.getTeachingHours() + ", " +
-                this.getSalary();
+                this.getSalary() + "\n";
     }
 
 }

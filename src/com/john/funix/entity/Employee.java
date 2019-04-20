@@ -11,10 +11,27 @@ import java.io.Serializable;
  * @author Trung Nguyen
  */
 public abstract class Employee implements Comparable<Employee>, Serializable {
+    private EType eTypeEmployee;
     private String fullName;
-    private float salaryRatio;//hệ số lương    
+    private float salaryRatio;
+    private float allowance;
 
-    private float allowance;//phụ cấp   
+    public Employee() { }
+
+    public Employee(EType eTypeEmployee, String fullName, float salaryRatio, float allowance) {
+        this.eTypeEmployee = eTypeEmployee;
+        this.fullName = fullName;
+        this.salaryRatio = salaryRatio;
+        this.allowance = allowance;
+    }
+
+    public EType geteTypeEmployee() {
+        return eTypeEmployee;
+    }
+
+    public void seteTypeEmployee(EType eTypeEmployee) {
+        this.eTypeEmployee = eTypeEmployee;
+    }
 
     public String getFullName() {
         return fullName;

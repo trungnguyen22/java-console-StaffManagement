@@ -12,14 +12,88 @@ import com.john.funix.utils.FileUtils;
 import com.john.funix.utils.InputHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
  * @author Trung Nguyen
  */
 public class Main {
+
+    public static void main(String[] args) {
+        String fileName = FileUtils.LIST_EMPLOYEE_FILE_NAME;
+        // create employee management object
+        EmployeeManagement empMan = new EmployeeManagement();
+        // read data from file
+        //empMan.setListE((ArrayList<Employee>) FileUtils.<Employee>readFile(fileName));
+        List<String> listEmployeeString = FileUtils.readListString(fileName);
+        empMan.mapFileDataToModel(listEmployeeString);
+
+        //menu
+        Scanner scan = new Scanner(System.in);
+        boolean keepRunning = true;
+        while (keepRunning) {
+            System.out.println("University Staff Management 1.0");
+            System.out.println("\t1.Add staff");
+            System.out.println("\t2.Search staff by name");
+            System.out.println("\t3.Search staff by department/faculty");
+            System.out.println("\t4.Display all staff");
+            System.out.println("\t5.Edit staff/teacher");
+            System.out.println("\t6.Exit");
+            System.out.print("Select function (1,2,3,4,5, or 6): ");
+            int choice = scan.nextInt();
+            switch (choice) {
+                case 1://add staff/teacher
+                    Employee emp = createNewEmployee();
+                    float allowance = AllowanceCalulator.calculateAllowance(emp);
+                    emp.setAllowance(allowance);
+                    empMan.addEmployee(emp);
+                    // FileUtils.writeFile(empMan.listAll(), fileName);
+                    FileUtils.writeListAsString(emp, fileName);
+                    break;
+                case 2://search by name
+                    display(searchByName(empMan));
+                    break;
+                case 3://search by dept
+                    display(searchByDept(empMan));
+                    break;
+                case 4://display all
+                    ArrayList<Employee> listE = empMan.listAll();
+                    display(listE);
+                    break;
+                case 5:// edit info
+                    ArrayList<Employee> foundByName = searchByName(empMan);
+                    display(foundByName);
+                    if (foundByName.size() > 0) {
+                        if (foundByName.size() > 1) {
+                            scan = new Scanner(System.in);
+                            int pick = 0;
+                            while (pick <= 0 || pick >= foundByName.size()) {
+                                pick = InputHelper.inputForPositiveIntegerNumber("Select a staff: ", scan);
+                                if (pick <= 0 || pick >= foundByName.size()) {
+                                    String message = "Please enter a number < %d and >= 0";
+                                    System.out.println(String.format(message, foundByName.size()));
+                                }
+                            }
+                            Employee employee = foundByName.get(pick);
+                            editStaff(scan, employee);
+                        } else {
+                            scan.nextLine();
+                            editStaff(scan, foundByName.get(0));
+                        }
+                        FileUtils.clearFile(fileName);
+                        FileUtils.writeFile(empMan.listAll(), fileName);
+                    }
+                    break;
+                case 6://exit
+                    keepRunning = false;
+            }
+        }
+    }
+
+
     //create an employee by inputing it's attribute values from keyboard
-    static Employee createNewEmployee() {
+    private static Employee createNewEmployee() {
         System.out.print("Do you want to create a Staff or a Teacher (enter S for Staff, otherwise for Teacher)?");
 
         Scanner scan = new Scanner(System.in);
@@ -32,6 +106,7 @@ public class Main {
 
         if (choice.equalsIgnoreCase("s")) {
             Staff s = new Staff();
+            s.seteTypeEmployee(EType.STAFF);
             s.setFullName(name);
             s.setSalaryRatio(salaryRatio);
 
@@ -45,7 +120,7 @@ public class Main {
             return s;
         } else {
             Teacher t = new Teacher();
-
+            t.seteTypeEmployee(EType.TEACHER);
             t.setFullName(name);
             t.setSalaryRatio(salaryRatio);
 
@@ -60,7 +135,7 @@ public class Main {
     }
 
     //display a list of employee
-    static void display(ArrayList<Employee> listE) {
+    private static void display(ArrayList<Employee> listE) {
         if (listE.size() == 0) {
             System.out.println("Not Found");
             return;
@@ -107,73 +182,5 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         String name = scan.nextLine();
         return employeeManagement.searchByName(name);
-    }
-
-    public static void main(String[] args) {
-        String fileName = FileUtils.LIST_EMPLOYEE_FILE_NAME;
-        // create employee management object
-        EmployeeManagement empMan = new EmployeeManagement();
-        // read data from file
-        empMan.setListE((ArrayList<Employee>) FileUtils.<Employee>readFile(fileName));
-
-        //menu
-        Scanner scan = new Scanner(System.in);
-        boolean keepRunning = true;
-        while (keepRunning) {
-            System.out.println("University Staff Management 1.0");
-            System.out.println("\t1.Add staff");
-            System.out.println("\t2.Search staff by name");
-            System.out.println("\t3.Search staff by department/faculty");
-            System.out.println("\t4.Display all staff");
-            System.out.println("\t5.Edit staff/teacher");
-            System.out.println("\t6.Exit");
-            System.out.print("Select function (1,2,3,4,5, or 6): ");
-            int choice = scan.nextInt();
-            switch (choice) {
-                case 1://add staff/teacher    
-                    Employee emp = createNewEmployee();
-                    float allowance = AllowanceCalulator.calculateAllowance(emp);
-                    emp.setAllowance(allowance);
-                    empMan.addEmployee(emp);
-                    FileUtils.writeFile(empMan.listAll(), fileName);
-                    break;
-                case 2://search by name
-                    display(searchByName(empMan));
-                    break;
-                case 3://search by dept
-                    display(searchByDept(empMan));
-                    break;
-                case 4://display all
-                    ArrayList<Employee> listE = empMan.listAll();
-                    display(listE);
-                    break;
-                case 5:// edit info
-                    ArrayList<Employee> foundByName = searchByName(empMan);
-                    display(foundByName);
-                    if (foundByName.size() > 0) {
-                        if (foundByName.size() > 1) {
-                            scan = new Scanner(System.in);
-                            int pick = 0;
-                            while (pick <= 0 || pick >= foundByName.size()) {
-                                pick = InputHelper.inputForPositiveIntegerNumber("Select a staff: ", scan);
-                                if (pick <= 0 || pick >= foundByName.size()) {
-                                    String message = "Please enter a number < %d and >= 0";
-                                    System.out.println(String.format(message, foundByName.size()));
-                                }
-                            }
-                            Employee employee = foundByName.get(pick);
-                            editStaff(scan, employee);
-                        } else {
-                            scan.nextLine();
-                            editStaff(scan, foundByName.get(0));
-                        }
-                        FileUtils.clearFile(fileName);
-                        FileUtils.writeFile(empMan.listAll(), fileName);
-                    }
-                    break;
-                case 6://exit
-                    keepRunning = false;
-            }
-        }
     }
 }

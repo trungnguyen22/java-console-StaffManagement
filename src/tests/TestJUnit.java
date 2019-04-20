@@ -4,12 +4,14 @@ import com.john.funix.business.AllowanceCalulator;
 import com.john.funix.business.EmployeeManagement;
 import com.john.funix.entity.*;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class EmployeeManagementTest {
+@RunWith(TestRunner.class)
+public class TestJUnit {
 
     private EmployeeManagement management;
 
@@ -22,7 +24,6 @@ public class EmployeeManagementTest {
         staffDeveloper.setNoOfWorkingDay(23);
         staffDeveloper.setPosition(EPosition.STAFF);
         staffDeveloper.setAllowance(AllowanceCalulator.calculateAllowance(staffDeveloper));
-        System.out.println("Developer Salary: " + staffDeveloper.getSalary());
 
         Staff staffDesigner = new Staff();
         staffDesigner.setFullName("Nguyen Hoang Phu");
@@ -30,7 +31,6 @@ public class EmployeeManagementTest {
         staffDesigner.setNoOfWorkingDay(19);
         staffDesigner.setPosition(EPosition.HEAD);
         staffDesigner.setAllowance(AllowanceCalulator.calculateAllowance(staffDesigner));
-        System.out.println("Designer Salary: " + staffDesigner.getSalary());
 
 
         Teacher mathsTeacher = new Teacher();
@@ -39,7 +39,6 @@ public class EmployeeManagementTest {
         mathsTeacher.setTeachingHours(192);
         mathsTeacher.setDegree(EDegree.MASTER);
         mathsTeacher.setAllowance(AllowanceCalulator.calculateAllowance(mathsTeacher));
-        System.out.println("Maths Teacher Salary: " + mathsTeacher.getSalary());
 
         management.addEmployee(staffDeveloper);
         management.addEmployee(staffDesigner);
